@@ -10,7 +10,7 @@ namespace JabbR.ContentProviders
         {
             var spotifyUri = ExtractSpotifyUri(request.RequestUri.AbsolutePath);
 
-            return TaskAsyncHelper.FromResult(new ContentProviderResult()
+            return TaskAsyncHelper.FromResult(new ContentProviderResult
                                                   {
                                                       Content = String.Format("<iframe src=\"https://embed.spotify.com/?uri=spotify:{0}\" width=\"300\" height=\"380\" frameborder=\"0\" allowtransparency=\"true\"></iframe>", spotifyUri),
                                                       Title = String.Format("spotify:track:{0}", spotifyUri)

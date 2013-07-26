@@ -5,8 +5,6 @@ using System.Text.RegularExpressions;
 using JabbR.Models;
 using JabbR.UploadHandlers;
 
-using Newtonsoft.Json;
-
 namespace JabbR.Services
 {
     public class ChatService : IChatService

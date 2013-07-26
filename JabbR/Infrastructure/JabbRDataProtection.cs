@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using JabbR.Services;
+﻿using JabbR.Services;
 using Microsoft.Owin.Security.DataProtection;
 
 namespace JabbR.Infrastructure

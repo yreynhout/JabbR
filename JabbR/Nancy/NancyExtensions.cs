@@ -71,12 +71,7 @@ namespace JabbR.Nancy
 
         public static void AddAlertMessage(this Request request, string messageType, string alertMessage)
         {
-            var container = request.Session.GetSessionValue<AlertMessageStore>(AlertMessageStore.AlertMessageKey);
-
-            if (container == null)
-            {
-                container = new AlertMessageStore();
-            }
+            var container = request.Session.GetSessionValue<AlertMessageStore>(AlertMessageStore.AlertMessageKey) ?? new AlertMessageStore();
 
             container.AddMessage(messageType, alertMessage);
 

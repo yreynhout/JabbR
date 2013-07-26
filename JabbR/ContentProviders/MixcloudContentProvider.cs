@@ -24,7 +24,7 @@ namespace JabbR.ContentProviders
 
         protected override IList<string> ExtractParameters(Uri responseUri)
         {
-            return new List<string>() { responseUri.AbsoluteUri };
+            return new List<string> { responseUri.AbsoluteUri };
         }
     }
 }

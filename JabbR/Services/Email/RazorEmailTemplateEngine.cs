@@ -60,7 +60,7 @@ namespace JabbR.Services
         {
             if (String.IsNullOrWhiteSpace(templateName))
             {
-                throw new System.ArgumentException(String.Format(System.Globalization.CultureInfo.CurrentUICulture, "\"{0}\" cannot be blank.", "templateName"));
+                throw new ArgumentException(String.Format(System.Globalization.CultureInfo.CurrentUICulture, "\"{0}\" cannot be blank.", "templateName"));
             }
 
             var templates = CreateTemplateInstances(templateName);
@@ -85,9 +85,9 @@ namespace JabbR.Services
                      .Distinct(StringComparer.OrdinalIgnoreCase)
                      .Each(email => mail.Bcc.Add(email));
 
-            templates.SelectMany(x => x.Value.CC)
+            templates.SelectMany(x => x.Value.Cc)
                      .Distinct(StringComparer.OrdinalIgnoreCase)
-                     .Each(email => mail.CC.Add(email));
+                     .Each(email => mail.Cc.Add(email));
 
             IEmailTemplate template = null;
 

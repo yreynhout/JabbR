@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using JabbR.Infrastructure;
@@ -167,23 +166,21 @@ namespace JabbR.Nancy
 
                             return this.SignIn(user);
                         }
-                        else
+
+                        // Add the required claims to this identity
+                        var identity = Principal.Identity as ClaimsIdentity;
+
+                        if (!Principal.HasClaim(ClaimTypes.Name))
                         {
-                            // Add the required claims to this identity
-                            var identity = Principal.Identity as ClaimsIdentity;
-
-                            if (!Principal.HasClaim(ClaimTypes.Name))
-                            {
-                                identity.AddClaim(new Claim(ClaimTypes.Name, username));
-                            }
-
-                            if (!Principal.HasClaim(ClaimTypes.Email))
-                            {
-                                identity.AddClaim(new Claim(ClaimTypes.Email, email));
-                            }
-
-                            return this.SignIn(Principal.Claims);
+                            identity.AddClaim(new Claim(ClaimTypes.Name, username));
                         }
+
+                        if (!Principal.HasClaim(ClaimTypes.Email))
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Email, email));
+                        }
+
+                        return this.SignIn(Principal.Claims);
                     }
                 }
                 catch (Exception ex)
@@ -432,20 +429,16 @@ namespace JabbR.Nancy
                 {
                     return View["resetpassworderror", LanguageResources.Account_ResetInvalidToken];
                 }
-                else
-                {
-                    ChatUser user = repository.GetUserByRequestResetPasswordId(userName, resetPasswordToken);
 
-                    // Is the token expired?
-                    if (user == null)
-                    {
-                        return View["resetpassworderror", LanguageResources.Account_ResetExpiredToken];
-                    }
-                    else
-                    {
-                        return View["resetpassword", user.RequestPasswordResetId];
-                    }
+                ChatUser user = repository.GetUserByRequestResetPasswordId(userName, resetPasswordToken);
+
+                // Is the token expired?
+                if (user == null)
+                {
+                    return View["resetpassworderror", LanguageResources.Account_ResetExpiredToken];
                 }
+
+                return View["resetpassword", user.RequestPasswordResetId];
             };
 
             Post["/resetpassword/{id}"] = parameters =>
@@ -474,13 +467,11 @@ namespace JabbR.Nancy
                         {
                             return View["resetpassworderror", LanguageResources.Account_ResetExpiredToken];
                         }
-                        else
-                        {
-                            membershipService.ResetUserPassword(user, newPassword);
-                            repository.CommitChanges();
 
-                            return View["resetpasswordsuccess"];
-                        }
+                        membershipService.ResetUserPassword(user, newPassword);
+                        repository.CommitChanges();
+
+                        return View["resetpasswordsuccess"];
                     }
                 }
                 catch (Exception ex)

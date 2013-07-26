@@ -133,7 +133,7 @@ namespace JabbR.Nancy
             }
 
             return notificationsQuery.OrderByDescending(n => n.Message.When)
-                                     .Select(n => new NotificationViewModel()
+                                     .Select(n => new NotificationViewModel
                                      {
                                          NotificationKey = n.Key,
                                          FromUserName = n.Message.User.Name,

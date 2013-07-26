@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -120,8 +119,8 @@ namespace JabbR.Infrastructure
             
             foreach (byte b in buffer)
             {
-                sb.Append(HexChar((int)(b >> 4)));
-                sb.Append(HexChar((int)(b & 0xF)));
+                sb.Append(HexChar(b >> 4));
+                sb.Append(HexChar(b & 0xF));
             }
 
             return sb.ToString();

@@ -12,7 +12,7 @@ namespace JabbR.Services
 
         ICollection<string> ReplyTo { get; }
 
-        ICollection<string> CC { get; }
+        ICollection<string> Cc { get; }
 
         ICollection<string> Bcc { get; }
 

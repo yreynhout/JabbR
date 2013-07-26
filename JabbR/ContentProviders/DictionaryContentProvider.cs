@@ -8,25 +8,23 @@ namespace JabbR.ContentProviders
 {
     public class DictionaryContentProvider : CollapsibleContentProvider
     {
-        private const string _domain = "http://dictionary.reference.com";
-        private static readonly string ContentFormat = "<div class='dictionary_wrapper'>" +
-                                                       "    <div class=\"dictionary_header\">" +
-                                                       "        <img src=\"{2}\" alt=\"\" width=\"64\" height=\"64\">" +
-                                                       "        <h2>{0}</h2>" +
-                                                       "    </div>" +
-                                                       "    <div>{1}</div>" +
-                                                       "</div>";
+        private const string Domain = "http://dictionary.reference.com";
+        private const string ContentFormat = "<div class='dictionary_wrapper'>" +
+                                             "    <div class=\"dictionary_header\">" +
+                                             "        <img src=\"{2}\" alt=\"\" width=\"64\" height=\"64\">" +
+                                             "        <h2>{0}</h2>" +
+                                             "    </div>" +
+                                             "    <div>{1}</div>" +
+                                             "</div>";
 
         protected override Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
             return ExtractFromResponse(request).Then(pageInfo =>
-            {
-                return new ContentProviderResult
+                new ContentProviderResult
                 {
                     Content = String.Format(ContentFormat, pageInfo.Title, pageInfo.WordDefinition, pageInfo.ImageURL),
                     Title = pageInfo.Title
-                };
-            });
+                });
         }
 
         public override bool IsValidContent(Uri uri)
@@ -64,7 +62,7 @@ namespace JabbR.ContentProviders
                 return String.Empty;
             }
 
-            //remove stylesheet links
+            // remove stylesheet links
             var stylesheets = wordDefinition.SelectNodes("//link");
             foreach (var stylesheet in stylesheets)
             {
@@ -79,7 +77,7 @@ namespace JabbR.ContentProviders
                 var href = link.Attributes["href"];
                 if (href != null && href.Value.StartsWith("/"))
                 {
-                    href.Value = String.Format("{0}{1}", _domain, href.Value);
+                    href.Value = String.Format("{0}{1}", Domain, href.Value);
 
                     if (link.Attributes["style"] != null)
                     {

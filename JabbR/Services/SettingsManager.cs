@@ -8,7 +8,8 @@ namespace JabbR.Services
     public class SettingsManager : ISettingsManager
     {
         private static readonly TimeSpan _settingsCacheTimespan = TimeSpan.FromDays(1);
-        private static readonly string _jabbrSettingsCacheKey = "jabbr.settings";
+
+        private const string JabbrSettingsCacheKey = "jabbr.settings";
 
         private readonly ICache _cache;
         private readonly JabbrContext _context;
@@ -21,7 +22,7 @@ namespace JabbR.Services
 
         public ApplicationSettings Load()
         {
-            var settings = _cache.Get<ApplicationSettings>(_jabbrSettingsCacheKey);
+            var settings = _cache.Get<ApplicationSettings>(JabbrSettingsCacheKey);
 
             if (settings == null)
             {
@@ -58,7 +59,7 @@ namespace JabbR.Services
                 }
 
                 // Cache the settings forever (until it changes)
-                _cache.Set(_jabbrSettingsCacheKey, settings, _settingsCacheTimespan);
+                _cache.Set(JabbrSettingsCacheKey, settings, _settingsCacheTimespan);
             }
 
             return settings;
@@ -88,7 +89,7 @@ namespace JabbR.Services
             _context.SaveChanges();
 
             // Clear the cache
-            _cache.Remove(_jabbrSettingsCacheKey);
+            _cache.Remove(JabbrSettingsCacheKey);
         }
     }
 }

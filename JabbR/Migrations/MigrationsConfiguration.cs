@@ -1,5 +1,4 @@
 using System.Data.Entity.Migrations;
-using JabbR.Models;
 
 namespace JabbR.Models.Migrations
 {

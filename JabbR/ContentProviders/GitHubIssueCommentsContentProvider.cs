@@ -13,20 +13,19 @@ namespace JabbR.ContentProviders
         //sample issue comment url
         //https://github.com/:owner/:repoR/issues/:issueid#issuecomment-:commentid
         private static readonly Regex _githubIssuesRegex = new Regex(@"https://github.com(.*)/issues/(\d+)\#issuecomment-(\d+)");
-        private static readonly string _gitHubIssuesApiFormat = "https://api.github.com/repos{0}/issues/comments/{1}?callback=addGitHubIssueComment";
-        private static readonly string _gitHubIssuesContentFormat = "<div class='git-hub-issue git-hub-issue-{0}'></div><script src='{1}'></script>";
 
+        private const string GitHubIssuesApiFormat = "https://api.github.com/repos{0}/issues/comments/{1}?callback=addGitHubIssueComment";
+        private const string GitHubIssuesContentFormat = "<div class='git-hub-issue git-hub-issue-{0}'></div><script src='{1}'></script>";
 
         protected override Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
             var parameters = ExtractParameters(request.RequestUri);
 
-            return TaskAsyncHelper.FromResult(new ContentProviderResult()
+            return TaskAsyncHelper.FromResult(new ContentProviderResult
             {
-                Content = String.Format(_gitHubIssuesContentFormat,
-                        parameters[2],
-                    String.Format(_gitHubIssuesApiFormat, parameters[0], parameters[2])
-                ),
+                Content = String.Format(GitHubIssuesContentFormat,
+                                        parameters[2],
+                                        String.Format(GitHubIssuesApiFormat, parameters[0], parameters[2])),
                 Title = request.RequestUri.AbsoluteUri
             });
         }
@@ -43,6 +42,5 @@ namespace JabbR.ContentProviders
         {
             return ExtractParameters(uri).Count == 3;
         }
-
     }
 }

@@ -73,7 +73,7 @@ namespace JabbR.Services
         private static string FormatBytes(long bytes)
         {
             const int scale = 1024;
-            string[] orders = new string[] { LanguageResources.SizeOrderGB, LanguageResources.SizeOrderMB, LanguageResources.SizeOrderKB, LanguageResources.SizeOrderBytes };
+            var orders = new[] { LanguageResources.SizeOrderGB, LanguageResources.SizeOrderMB, LanguageResources.SizeOrderKB, LanguageResources.SizeOrderBytes };
             long max = (long)Math.Pow(scale, orders.Length - 1);
 
             foreach (string order in orders)

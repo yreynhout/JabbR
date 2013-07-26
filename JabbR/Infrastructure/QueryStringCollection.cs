@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 
 namespace JabbR.Infrastructure
 {
@@ -67,7 +66,6 @@ namespace JabbR.Infrastructure
         /// Returns a value from a dictionary, converted to the specified type.
         /// </summary>
         /// <typeparam name="T">Type to convert to</typeparam>
-        /// <param name="dict">The source dictionary.</param>
         /// <param name="key">The key.</param>
         /// <returns>True if the value does not exist in the dictionary or can be converted to the requested type.
         /// False if the value exists but cannot be converted to the requested type.</returns>
@@ -81,24 +79,21 @@ namespace JabbR.Infrastructure
             {
                 if (String.IsNullOrEmpty(valueStr))
                 {
-                    if (type.IsValueType && !IsNullableType(type))
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    return !type.IsValueType || IsNullableType(type);
                 }
+
                 var converter = TypeDescriptor.GetConverter(typeof(T));
                 if (converter == null || !converter.IsValid(valueStr))
                 {
                     return false;
                 }
-                value =  (T)converter.ConvertFromString(valueStr);
+
+                value = (T)converter.ConvertFromString(valueStr);
             }
+
             return true;
         }
+
         private static bool IsNullableType(Type type)
         {
             return Nullable.GetUnderlyingType(type) != null;
@@ -116,7 +111,7 @@ namespace JabbR.Infrastructure
         {
             get
             {
-                string value = null;
+                string value;
                 _queryStringDictionary.TryGetValue(key, out value);
                 return value;
             }

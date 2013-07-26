@@ -19,7 +19,7 @@ namespace JabbR.WebApi
         /// <summary>
         /// Returns an absolute URL (including host and protocol) that corresponds to the relative path passed as an argument.
         /// </summary>
-        /// <param name="sitePath">Path within the aplication, may contain ~ to denote the application root</param>
+        /// <param name="sitePath">Path within the application, may contain ~ to denote the application root</param>
         /// <returns>A URL that corresponds to requested path using host and protocol of the request</returns>
         public string ToAbsoluteUrl(string sitePath)
         {

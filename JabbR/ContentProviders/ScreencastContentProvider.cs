@@ -15,15 +15,13 @@ namespace JabbR.ContentProviders
         protected override Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
             return ExtractFromResponse(request).Then(pageInfo =>
-            {
-                return new ContentProviderResult
+                new ContentProviderResult
                 {
-                    Content = String.Format(ContentFormat, 
-					                        HttpUtility.HtmlAttributeEncode(pageInfo.ImageURL), 
-					                        HttpUtility.HtmlAttributeEncode(pageInfo.Title)),
+                    Content = String.Format(ContentFormat,
+                                            HttpUtility.HtmlAttributeEncode(pageInfo.ImageURL),
+                                            HttpUtility.HtmlAttributeEncode(pageInfo.Title)),
                     Title = pageInfo.Title
-                };
-            });
+                });
         }
 
         public override bool IsValidContent(Uri uri)

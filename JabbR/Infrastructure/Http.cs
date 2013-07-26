@@ -8,7 +8,7 @@ namespace JabbR.Infrastructure
 {
     public static class Http
     {
-        private const string _userAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; MAAU)";
+        private const string UserAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; MAAU)";
 
         public static Task<dynamic> GetJsonAsync(string url)
         {
@@ -29,7 +29,7 @@ namespace JabbR.Infrastructure
         public static Task<HttpWebResponse> GetAsync(Uri uri, Action<HttpWebRequest> init = null)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.UserAgent = _userAgent;
+            request.UserAgent = UserAgent;
             if (init != null)
             {
                 init(request);

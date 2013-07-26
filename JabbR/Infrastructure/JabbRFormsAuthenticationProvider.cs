@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using JabbR.Models;
@@ -69,7 +68,7 @@ namespace JabbR.Infrastructure
             }
             else if (principal.HasRequiredClaims())
             {
-                ChatUser targetUser = null;
+                ChatUser targetUser;
 
                 // The user doesn't exist but the claims to create the user do exist
                 if (loggedInUser == null)

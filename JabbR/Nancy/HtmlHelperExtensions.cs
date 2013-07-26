@@ -13,28 +13,25 @@ namespace JabbR
 {
     public static class HtmlHelperExtensions
     {
-        public static IHtmlString CheckBox<T>(this HtmlHelpers<T> helper, string Name, bool value)
+        public static IHtmlString CheckBox<T>(this HtmlHelpers<T> helper, string name, bool value)
         {
             string input = String.Empty;
             
             var checkBoxBuilder = new StringBuilder();
 
             checkBoxBuilder.Append(@"<input id=""");
-            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(Name));
+            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(name));
             checkBoxBuilder.Append(@""" data-name=""");
-            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(Name));
+            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(name));
             checkBoxBuilder.Append(@""" type=""checkbox""");
             if (value)
             {
-                checkBoxBuilder.Append(@" checked=""checked"" />");
+                checkBoxBuilder.Append(@" checked=""checked""");
             }
-            else
-            {
-                checkBoxBuilder.Append(" />");
-            }
+            checkBoxBuilder.Append(" />");
 
             checkBoxBuilder.Append(@"<input name=""");
-            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(Name));
+            checkBoxBuilder.Append(AntiXSS.Encoder.HtmlAttributeEncode(name));
             checkBoxBuilder.Append(@""" type=""hidden"" value=""");
             checkBoxBuilder.Append(value.ToString().ToLowerInvariant());
             checkBoxBuilder.Append(@""" />");

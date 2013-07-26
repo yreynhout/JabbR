@@ -21,7 +21,7 @@ namespace JabbR.Infrastructure
 
         public void Dispose()
         {
-            IDisposable disposable = resolver as IDisposable;
+            var disposable = resolver as IDisposable;
             if (disposable != null)
                 disposable.Dispose();
 

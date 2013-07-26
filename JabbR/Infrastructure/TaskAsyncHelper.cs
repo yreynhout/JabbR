@@ -95,7 +95,7 @@ namespace JabbR
             return Then(tasks, () => { });
         }
 
-        // Then extesions
+        // Then extensions
         public static Task Then(this Task task, Action successor)
         {
             switch (task.Status)
@@ -148,8 +148,9 @@ namespace JabbR
                     tcs.SetException(faulted.Exception);
                     return;
                 }
-                var cancelled = completedTasks.FirstOrDefault(t => t.IsCanceled);
-                if (cancelled != null)
+
+                var canceled = completedTasks.FirstOrDefault(t => t.IsCanceled);
+                if (canceled != null)
                 {
                     tcs.SetCanceled();
                     return;
@@ -402,15 +403,11 @@ namespace JabbR
             var tcs = new TaskCompletionSource<object>();
 
             var timer = new Timer(tcs.SetResult,
-            null,
-            timeOut,
-            TimeSpan.FromMilliseconds(-1));
+                                    null,
+                                    timeOut,
+                                    TimeSpan.FromMilliseconds(-1));
 
-            return tcs.Task.ContinueWith(_ =>
-            {
-                timer.Dispose();
-            },
-            TaskContinuationOptions.ExecuteSynchronously);
+            return tcs.Task.ContinueWith(_ => timer.Dispose(), TaskContinuationOptions.ExecuteSynchronously);
         }
 
         public static Task AllSucceeded(this Task[] tasks, Action continuation)
@@ -422,8 +419,8 @@ namespace JabbR
         {
             return Task.Factory.ContinueWhenAll(tasks, _ =>
             {
-                var cancelledTask = tasks.FirstOrDefault(task => task.IsCanceled);
-                if (cancelledTask != null)
+                var canceledTask = tasks.FirstOrDefault(task => task.IsCanceled);
+                if (canceledTask != null)
                     throw new TaskCanceledException();
 
                 var allExceptions =

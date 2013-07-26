@@ -11,7 +11,7 @@ namespace JabbR.ContentProviders
         {
             string id = request.RequestUri.AbsoluteUri.Split('/').Last();
 
-            return TaskAsyncHelper.FromResult(new ContentProviderResult()
+            return TaskAsyncHelper.FromResult(new ContentProviderResult
             {
                 Content = String.Format(@"<img src=""proxy?url=http://i.imgur.com/{0}.jpg"" />", id),
                 Title = request.RequestUri.AbsoluteUri

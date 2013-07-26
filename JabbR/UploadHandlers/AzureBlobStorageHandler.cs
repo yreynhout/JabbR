@@ -37,7 +37,7 @@ namespace JabbR.UploadHandlers
             var client = account.CreateCloudBlobClient();
             var container = client.GetContainerReference(JabbRUploadContainer);
 
-            // Randomize the filename everytime so we don't overwrite files
+            // Randomize the filename every time so we don't overwrite files
             string randomFile = Path.GetFileNameWithoutExtension(fileName) +
                                 "_" +
                                 Guid.NewGuid().ToString().Substring(0, 4) + Path.GetExtension(fileName);

@@ -6,7 +6,7 @@ namespace JabbR.Infrastructure
     {
         public static void Log(this ILogger logger, Exception exception)
         {
-            logger.Log(LogType.Error, "Exception:\r\n" + exception.ToString());
+            logger.Log(LogType.Error, "Exception:\r\n" + exception);
         }
 
         public static void LogError(this ILogger logger, string message, params object[] args)

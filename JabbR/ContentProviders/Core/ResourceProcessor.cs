@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading.Tasks;
-using JabbR.Services;
+
 using Ninject;
 
 namespace JabbR.ContentProviders.Core

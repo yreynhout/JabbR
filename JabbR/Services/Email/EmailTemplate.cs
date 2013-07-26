@@ -14,7 +14,7 @@ namespace JabbR.Services
         {
             To = new List<string>();
             ReplyTo = new List<string>();
-            CC = new List<string>();
+            this.Cc = new List<string>();
             Bcc = new List<string>();
             Headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
@@ -29,7 +29,7 @@ namespace JabbR.Services
 
         public ICollection<string> ReplyTo { get; private set; }
 
-        public ICollection<string> CC { get; private set; }
+        public ICollection<string> Cc { get; private set; }
 
         public ICollection<string> Bcc { get; private set; }
 

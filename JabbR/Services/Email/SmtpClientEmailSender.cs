@@ -11,7 +11,7 @@ namespace JabbR.Services
         {
             if (email == null)
             {
-                throw new System.ArgumentNullException("email");
+                throw new ArgumentNullException("email");
             }
 
             using (var message = CreateMailMessage(email))
@@ -34,7 +34,7 @@ namespace JabbR.Services
 
             email.To.Each(to => message.To.Add(to));
             email.ReplyTo.Each(to => message.ReplyToList.Add(to));
-            email.CC.Each(cc => message.CC.Add(cc));
+            email.Cc.Each(cc => message.CC.Add(cc));
             email.Bcc.Each(bcc => message.Bcc.Add(bcc));
             email.Headers.Each(pair => message.Headers[pair.Key] = pair.Value);
 

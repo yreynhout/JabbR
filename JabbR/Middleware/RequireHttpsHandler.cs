@@ -23,9 +23,7 @@ namespace JabbR.Middleware
 
             if (!request.Uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
             {
-                var builder = new UriBuilder(request.Uri);
-                builder.Scheme = "https";
-
+                var builder = new UriBuilder(request.Uri) { Scheme = "https" };
                 if (request.Uri.IsDefaultPort)
                 {
                     builder.Port = -1;

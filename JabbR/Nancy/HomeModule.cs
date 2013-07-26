@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Resources;
@@ -73,15 +72,12 @@ namespace JabbR.Nancy
                     string roomName = Request.Form.room;
                     string connectionId = Request.Form.connectionId;
                     string file = Request.Form.file;
-                    //string fileName = "clipboard_" + Guid.NewGuid().ToString("N");
                     string fileName = Request.Form.filename;
-                    string contentType = Request.Form.type;
-                    byte[] binData = null;
 
                     var info = Regex.Match(file, @"data:(?:(?<unkown>.+?)/(?<type>.+?))?;base64,(?<data>.+)");
 
-                    binData = Convert.FromBase64String(info.Groups["data"].Value);
-                    contentType = info.Groups["type"].Value;
+                    byte[] binData = Convert.FromBase64String(info.Groups["data"].Value);
+                    string contentType = info.Groups["type"].Value;
 
                     if (String.IsNullOrWhiteSpace(contentType))
                     {
@@ -113,7 +109,7 @@ namespace JabbR.Nancy
 
         private static string BuildClientResources()
         {
-            var resourcesToEmbed = new string[]
+            var resourcesToEmbed = new[]
             {
                 "Content_HeaderAndToggle",
                 "Chat_YouEnteredRoom",

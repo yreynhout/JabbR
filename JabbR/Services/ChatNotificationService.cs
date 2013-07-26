@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using JabbR.Models;
+﻿using JabbR.Models;
 using JabbR.ViewModels;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;

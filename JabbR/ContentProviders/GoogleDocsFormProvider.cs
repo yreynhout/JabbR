@@ -31,7 +31,7 @@ namespace JabbR.ContentProviders
 
             if (!String.IsNullOrEmpty(formKey))
             {
-                return new [] { formKey };
+                return new[] { formKey };
             }
 
             return null;

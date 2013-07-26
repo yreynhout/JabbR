@@ -12,8 +12,7 @@ namespace JabbR.ContentProviders
     /// </summary>
     public class SlideShareContentProvider : CollapsibleContentProvider
     {
-        private static readonly String _oEmbedUrl = "https://www.slideshare.net/api/oembed/2?url={0}&format=json";
-
+        private const String OEmbedUrl = "https://www.slideshare.net/api/oembed/2?url={0}&format=json";
 
         protected override Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
@@ -21,11 +20,11 @@ namespace JabbR.ContentProviders
             // their embed code request the unique ID of the slide deck
             // where we will only have the url -- this call gets the json information
             // on the slide deck and that package happens to already contain the embed code (.html)
-            var url = String.Format(_oEmbedUrl, request.RequestUri.AbsoluteUri);
+            var url = String.Format(OEmbedUrl, request.RequestUri.AbsoluteUri);
             return Http.GetJsonAsync(url).Then(slideShareData =>
             {
                 string html = slideShareData.html;
-                return new ContentProviderResult()
+                return new ContentProviderResult
                 {
                     Content = html.Replace("http://", "https://"),
                     Title = slideShareData.title

@@ -6,13 +6,13 @@ namespace JabbR.ContentProviders
 {
     public class JoinMeContentProvider : CollapsibleContentProvider
     {
-        private static readonly string _iframedMeetingFormat = "<iframe src=\"{0}\" width=\"700\" height=\"400\"></iframe>";
+        private const string IFramedMeetingFormat = "<iframe src=\"{0}\" width=\"700\" height=\"400\"></iframe>";
 
         protected override Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
             return TaskAsyncHelper.FromResult(new ContentProviderResult()
             {
-                Content = String.Format(_iframedMeetingFormat, request.RequestUri.AbsoluteUri),
+                Content = String.Format(IFramedMeetingFormat, request.RequestUri.AbsoluteUri),
                 Title = String.Format(LanguageResources.JoinMeContent_DefaultTitle, request.RequestUri.AbsoluteUri)
             });
         }

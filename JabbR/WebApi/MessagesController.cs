@@ -62,7 +62,7 @@ namespace JabbR.WebApi
             filenamePrefix += end.ToString(FilenameDateFormat, CultureInfo.InvariantCulture);
 
 
-            ChatRoom chatRoom = null;
+            ChatRoom chatRoom;
 
             try
             {

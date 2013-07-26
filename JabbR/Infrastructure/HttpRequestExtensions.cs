@@ -17,7 +17,7 @@ namespace JabbR.Infrastructure
         /// <typeparam name="T">Type of the payload (usually inferred).</typeparam>
         /// <param name="request">Request message that is used to create output message.</param>
         /// <param name="statusCode">Status code to return to the client</param>
-        /// <param name="data">API payoad</param>
+        /// <param name="data">API payload</param>
         /// <param name="filenamePrefix">Filename to return to the client, if client requests so.</param>
         /// <returns>
         /// HttpResponseMessage that wraps the given payload
@@ -34,12 +34,11 @@ namespace JabbR.Infrastructure
         /// <param name="data">API payoad</param>
         /// <param name="request">Request message that is used to create output message.</param>
         /// <param name="statusCode">Status code to return to the client</param>
-        /// <param name="filenamePrefix">Filename to return to the client, if client requests so.</param>
         /// <returns>HttpResponseMessage that wraps the given payload</returns>
-        public static HttpResponseMessage CreateJabbrSuccessMessage<T>(this HttpRequestMessage Request, HttpStatusCode statusCode, T data)
+        public static HttpResponseMessage CreateJabbrSuccessMessage<T>(this HttpRequestMessage request, HttpStatusCode statusCode, T data)
         {
-            var responseMessage = Request.CreateResponse(statusCode, data);
-            return AddResponseHeaders(Request, responseMessage, null);
+            var responseMessage = request.CreateResponse(statusCode, data);
+            return AddResponseHeaders(request, responseMessage, null);
         }
 
         /// <summary>
@@ -47,7 +46,8 @@ namespace JabbR.Infrastructure
         /// </summary>
         /// <param name="request">Request message that is used to create output message.</param>
         /// <param name="statusCode">Status code to return to the client</param>
-        /// <param name="data">Error response that is sent to the client.</param>
+        /// <param name="message">Error response that is sent to the client.</param>
+        /// <param name="filenamePrefix">Filename to return to the client, if client requests so.</param>
         /// <returns>HttpResponseMessage that wraps the given payload</returns>
         public static HttpResponseMessage CreateJabbrErrorMessage(this HttpRequestMessage request, HttpStatusCode statusCode, string message, string filenamePrefix)
         {
@@ -58,12 +58,13 @@ namespace JabbR.Infrastructure
 
             return AddResponseHeaders(request, responseMessage, filenamePrefix);
         }
+
         /// <summary>
         /// Returns an error message with the given message. This is returned to the client using the supplied status code
         /// </summary>
         /// <param name="request">Request message that is used to create output message.</param>
         /// <param name="statusCode">Status code to return to the client</param>
-        /// <param name="data">Error response that is sent to the client.</param>
+        /// <param name="message">Error response that is sent to the client.</param>
         /// <returns>HttpResponseMessage that wraps the given payload</returns>
         public static HttpResponseMessage CreateJabbrErrorMessage(this HttpRequestMessage request, HttpStatusCode statusCode, string message)
         {
@@ -79,6 +80,7 @@ namespace JabbR.Infrastructure
         {
             return AddDownloadHeader(request, responseMessage, filenamePrefix);
         }
+
         private static HttpResponseMessage AddDownloadHeader(HttpRequestMessage request, HttpResponseMessage responseMessage, string filenamePrefix)
         {
             var queryString = new QueryStringCollection(request.RequestUri);
@@ -111,14 +113,9 @@ namespace JabbR.Infrastructure
         /// </returns>
         public static bool IsLocal(this HttpRequestMessage requestMessage)
         {
-            //Web API sets IsLocal as a Lazy<bool> in the Properties dictionary
+            // Web API sets IsLocal as a Lazy<bool> in the Properties dictionary
             var isLocal = requestMessage.Properties[HttpPropertyKeys.IsLocalKey] as Lazy<bool>;
-            if (isLocal != null)
-            {
-                return isLocal.Value;
-            }
-
-            return false;
+            return isLocal != null && isLocal.Value;
         }
 
 
@@ -130,7 +127,7 @@ namespace JabbR.Infrastructure
         /// <param name="value">New value of isLocal</param>
         public static void SetIsLocal(this HttpRequestMessage requestMessage, bool value)
         {
-            //Web API sets IsLocal as a Lazy<bool> in the Properties dictionary
+            // Web API sets IsLocal as a Lazy<bool> in the Properties dictionary
             requestMessage.Properties[HttpPropertyKeys.IsLocalKey] = new Lazy<bool>(()=>value);
         }
 
@@ -156,9 +153,8 @@ namespace JabbR.Infrastructure
                 Host = requestMessage.RequestUri.Host,
                 Path = "/",
                 Scheme = proto,
+                Port = requestMessage.RequestUri.Port
             };
-
-            uriBuilder.Port = requestMessage.RequestUri.Port;
 
             return new Uri(uriBuilder.Uri, relativeUri);
         }

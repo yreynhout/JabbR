@@ -7,12 +7,12 @@ namespace JabbR.Infrastructure
 {
     public class UrlExtractor
     {
-        private static Regex urlPattern = new Regex(@"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’]))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _urlPattern = new Regex(@"(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’]))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static IList<string> ExtractUrls(string message)
         {
             var urls = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var matches = urlPattern.Matches(message);
+            var matches = _urlPattern.Matches(message);
 
             foreach (Match m in matches)
             {
@@ -26,7 +26,7 @@ namespace JabbR.Infrastructure
                 {
                     urls.Add(url);
                 }
-            };
+            }
 
             return urls.ToList();
         }

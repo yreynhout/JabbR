@@ -12,7 +12,7 @@ namespace JabbR.Services
         private readonly IJabbrRepository _repository;
         private readonly ICryptoService _crypto;
 
-        private const int passwordMinLength = 6;
+        private const int PasswordMinLength = 6;
 
         public MembershipService(IJabbrRepository repository, ICryptoService crypto)
         {
@@ -211,9 +211,9 @@ namespace JabbR.Services
 
         private static void ValidatePassword(string password)
         {
-            if (String.IsNullOrEmpty(password) || password.Length < passwordMinLength)
+            if (String.IsNullOrEmpty(password) || password.Length < PasswordMinLength)
             {
-                throw new InvalidOperationException(String.Format(LanguageResources.Authentication_PassLengthRequired, passwordMinLength));
+                throw new InvalidOperationException(String.Format(LanguageResources.Authentication_PassLengthRequired, PasswordMinLength));
             }
         }
 

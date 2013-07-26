@@ -43,11 +43,7 @@ namespace JabbR
         {
             get
             {
-                if (Context.Headers != null)
-                {
-                    return Context.Headers["User-Agent"];
-                }
-                return null;
+                return this.Context.Headers != null ? this.Context.Headers["User-Agent"] : null;
             }
         }
 
@@ -920,7 +916,7 @@ namespace JabbR
             Clients.Clients(user.GetConnections()).sendInvite(user.Name, targetUser.Name, targetRoom.Name);
         }
 
-        void INotificationService.NugeUser(ChatUser user, ChatUser targetUser)
+        void INotificationService.NudgeUser(ChatUser user, ChatUser targetUser)
         {
             // Send a nudge message to the sender and the sendee
             Clients.Clients(targetUser.GetConnections()).nudge(user.Name, targetUser.Name);

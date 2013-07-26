@@ -44,7 +44,7 @@ namespace JabbR.Infrastructure
             }
 
             input = input.Replace('+', '-').Replace('/', '_').Replace("=", String.Empty);
-            // calculate the padding number, the math is the nearst base 4 number.
+            // calculate the padding number, the math is the nearest base 4 number.
             int paddingNumber = (4 - input.Length % 4) % 4;
 
             return input + paddingNumber.ToString();

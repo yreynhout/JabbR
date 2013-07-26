@@ -25,7 +25,7 @@ namespace JabbR.ContentProviders
 
         protected override async Task<ContentProviderResult> GetCollapsibleContent(ContentProviderHttpRequest request)
         {
-            string format = @"<a rel=""nofollow external"" target=""_blank"" href=""{0}""><img src=""{1}"" /></a>";
+            const string Format = @"<a rel=""nofollow external"" target=""_blank"" href=""{0}""><img src=""{1}"" /></a>";
             string imageUrl = request.RequestUri.ToString();
             string href = imageUrl;
 
@@ -50,9 +50,9 @@ namespace JabbR.ContentProviders
                 }
             }
 
-            return new ContentProviderResult()
+            return new ContentProviderResult
             {
-                Content = String.Format(format, Encoder.HtmlAttributeEncode(href), 
+                Content = String.Format(Format, Encoder.HtmlAttributeEncode(href), 
                                                 Encoder.HtmlAttributeEncode(imageUrl)),
                 Title = href
             };

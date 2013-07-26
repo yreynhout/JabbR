@@ -1,5 +1,4 @@
-﻿
-namespace JabbR.Services
+﻿namespace JabbR.Services
 {
     public interface ICryptoService
     {

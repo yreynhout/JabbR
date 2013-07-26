@@ -14,8 +14,6 @@ namespace JabbR.Infrastructure
                     return String.Format("https://www.google.com/profiles/{0}", identity);
                 case "facebook":
                     return String.Format("http://www.facebook.com/profile.php?id={0}", identity);
-                default:
-                    break;
             }
 
             return null;
