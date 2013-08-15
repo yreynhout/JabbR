@@ -331,10 +331,23 @@
         ui.setRoomLocked(room);
         ui.updatePrivateLobbyRooms(room);
     };
+    
+    chat.client.unlockRoom = function (user, room) {
+        if (!isSelf(user) && this.state.activeRoom === room) {
+            ui.addMessage(utility.getLanguageResource('Chat_UserUnlockedRoom', user.Name, room), 'notification', this.state.activeRoom);
+        }
+
+        ui.setRoomUnlocked(room);
+        ui.updatePublicLobbyRooms(room);
+    };
 
     // Called when this user locked a room
     chat.client.roomLocked = function (room) {
         ui.addMessage(utility.getLanguageResource('Chat_RoomNowLocked', room), 'notification', this.state.activeRoom);
+    };
+    
+    chat.client.roomUnlocked = function (room) {
+        ui.addMessage(utility.getLanguageResource('Chat_RoomNowUnlocked', room), 'notification', this.state.activeRoom);
     };
 
     chat.client.roomClosed = function (room) {

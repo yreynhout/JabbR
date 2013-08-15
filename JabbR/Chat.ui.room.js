@@ -200,6 +200,11 @@
         this.tab.addClass('locked');
         this.tab.find('.lock').removeClass('hide');
     };
+    
+    Room.prototype.setUnlocked = function () {
+        this.tab.removeClass('locked');
+        this.tab.find('.lock').addClass('hide');
+    };
 
     Room.prototype.setListState = function (list) {
         var emptyStatus = list.children('li.empty'),

@@ -939,6 +939,7 @@
     <Content Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\UnlockCommand.cs" />
     <Compile Include="Infrastructure\AuthenticationService.cs" />
     <Compile Include="Infrastructure\EnumerableExtensions.cs" />
     <Compile Include="Infrastructure\HttpServerUtility.cs" />

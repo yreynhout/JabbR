@@ -1129,4 +1129,19 @@ Use ? or type /? to display the FAQ and list of commands.</value>
   <data name="Client_UploadDropTarget" xml:space="preserve">
     <value>Drop files here</value>
   </data>
+  <data name="Chat_RoomNowUnlocked" xml:space="preserve">
+    <value>{0} is now unlocked.</value>
+  </data>
+  <data name="Chat_UserUnlockedRoom" xml:space="preserve">
+    <value>{0} has unlocked {1}.</value>
+  </data>
+  <data name="PrivateRoomAlreadyHasMessages" xml:space="preserve">
+    <value>You cannot unlock {0} because it already contains messages. This is a privacy concern.</value>
+  </data>
+  <data name="RoomNotLocked" xml:space="preserve">
+    <value>You cannot unlock {0}. The room is already public.</value>
+  </data>
+  <data name="Unlock_CommandInfo" xml:space="preserve">
+    <value>Make a room public. Only works if you're the creator of that room. Warning! Clears all messages due to reasons of privacy.</value>
+  </data>
 </root>

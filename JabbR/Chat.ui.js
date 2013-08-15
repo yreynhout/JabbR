@@ -1364,6 +1364,11 @@
 
             room.setLocked();
         },
+        setRoomUnlocked: function (roomName) {
+            var room = getRoomElements(roomName);
+
+            room.setUnlocked();
+        },
         setRoomClosed: function (roomName) {
             var room = getRoomElements(roomName);
 
@@ -1375,6 +1380,12 @@
                 $room = lobby.users.find('li[data-name="' + roomName + '"]');
 
             $room.addClass('locked').appendTo(lobby.owners);
+        },
+        updatePublicLobbyRooms: function (roomName) {
+            var lobby = getLobby(),
+                $room = lobby.users.find('li[data-name="' + roomName + '"]');
+
+            $room.removeClass('locked').appendTo(lobby.owners);
         },
         updateUnread: function (roomName, isMentioned) {
             var room = roomName ? getRoomElements(roomName) : getCurrentRoomElements();

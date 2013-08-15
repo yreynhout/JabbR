@@ -750,6 +750,37 @@ namespace JabbR.Services
             _repository.CommitChanges();
         }
 
+        public void UnlockRoom(ChatUser user, ChatRoom targetRoom)
+        {
+            EnsureOwnerOrAdmin(user, targetRoom);
+
+            if (!targetRoom.Private)
+            {
+                throw new HubException(String.Format(LanguageResources.RoomNotLocked, targetRoom.Name));
+            }
+
+            if (targetRoom.Messages.Any(m => m.MessageType == (int)MessageType.Default))
+            {
+                throw new HubException(String.Format(LanguageResources.PrivateRoomAlreadyHasMessages, targetRoom.Name));
+            }
+
+            //or targetRoom.Messages.Clear();
+
+            // Make the room public
+            targetRoom.Private = false;
+
+            // Remove the target room from each allowed user's allowed rooms.
+            foreach (var allowedUser in targetRoom.AllowedUsers)
+            {
+                allowedUser.AllowedRooms.Remove(targetRoom);
+            }
+
+            // Remove all allowed users since this is a private room only concept
+            targetRoom.AllowedUsers.Clear();
+
+            _repository.CommitChanges();
+        }
+
         public void CloseRoom(ChatUser user, ChatRoom targetRoom)
         {
             EnsureOwnerOrAdmin(user, targetRoom);

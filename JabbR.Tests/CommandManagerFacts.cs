@@ -4517,6 +4517,284 @@ namespace JabbR.Test
             }
         }
 
+        public class UnlockCommand
+        {
+            [Fact]
+            public void MissingRoomNameThrowsFromLobby()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                HubException ex = Assert.Throws<HubException>(() => commandManager.TryHandleCommand("/unlock"));
+                Assert.Equal("Which room do you want to lock?", ex.Message);
+            }
+
+            [Fact]
+            public void MissingRoomNameSucceedsFromRoom()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = true
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                user.OwnedRooms.Add(room);
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        "room",
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                bool result = commandManager.TryHandleCommand("/unlock");
+
+                Assert.True(result);
+                notificationService.Verify(x => x.UnlockRoom(user, room), Times.Once());
+                Assert.False(room.Private);
+            }
+
+            [Fact]
+            public void NotExistingRoomNameThrows()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                HubException ex = Assert.Throws<HubException>(() => commandManager.TryHandleCommand("/unlock room"));
+                Assert.Equal("Unable to find room.", ex.Message);
+            }
+
+            [Fact]
+            public void CanUnlockPrivateRoom()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = true
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                user.OwnedRooms.Add(room);
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                bool result = commandManager.TryHandleCommand("/unlock room");
+
+                Assert.True(result);
+                notificationService.Verify(x => x.UnlockRoom(user, room), Times.Once());
+                Assert.False(room.Private);
+            }
+
+            [Fact]
+            public void UnlockPublicRoomThrows()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = false
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                user.OwnedRooms.Add(room);
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                HubException ex = Assert.Throws<HubException>(() => commandManager.TryHandleCommand("/unlock room"));
+                Assert.Equal("You cannot unlock room. The room is already public.", ex.Message);
+            }
+
+            [Fact]
+            public void CanUnlockClosedRoom()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = true,
+                    Closed = true
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                user.OwnedRooms.Add(room);
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                bool result = commandManager.TryHandleCommand("/unlock room");
+
+                Assert.True(result);
+                notificationService.Verify(x => x.UnlockRoom(user, room), Times.Once());
+                Assert.False(room.Private);
+            }
+
+            [Fact]
+            public void UnlockPrivateRoomWithDefaultMessagesThrows()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = true
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                user.OwnedRooms.Add(room);
+                room.Messages.Add(new ChatMessage
+                {
+                    MessageType = (int) MessageType.Default
+                });
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                HubException ex = Assert.Throws<HubException>(() => commandManager.TryHandleCommand("/unlock room"));
+                Assert.Equal("You cannot unlock room because it already contains messages. This is a privacy concern.", ex.Message);
+            }
+
+            [Fact]
+            public void CanUnlockRoomWithNotificationMessagesOnly()
+            {
+                var repository = new InMemoryRepository();
+                var cache = new Mock<ICache>().Object;
+                var user = new ChatUser
+                {
+                    Name = "dfowler",
+                    Id = "1"
+                };
+                repository.Add(user);
+                var room = new ChatRoom
+                {
+                    Name = "room",
+                    Private = true
+                };
+                room.Creator = user;
+                room.Owners.Add(user);
+                room.Messages.Add(new ChatMessage
+                {
+                    MessageType = (int)MessageType.Notification
+                });
+                user.OwnedRooms.Add(room);
+                repository.Add(room);
+                var service = new ChatService(cache, repository);
+                var notificationService = new Mock<INotificationService>();
+                var commandManager = new CommandManager("clientid",
+                                                        "1",
+                                                        null,
+                                                        service,
+                                                        repository,
+                                                        cache,
+                                                        notificationService.Object);
+
+                bool result = commandManager.TryHandleCommand("/unlock room");
+
+                Assert.True(result);
+                notificationService.Verify(x => x.UnlockRoom(user, room), Times.Once());
+                Assert.False(room.Private);
+            }
+        }
+
         public class CloseCommand
         {
             [Fact]

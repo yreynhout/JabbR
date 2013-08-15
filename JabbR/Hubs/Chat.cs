@@ -859,6 +859,20 @@ namespace JabbR
             OnRoomChanged(room);
         }
 
+        void INotificationService.UnlockRoom(ChatUser targetUser, ChatRoom room)
+        {
+            var userViewModel = new UserViewModel(targetUser);
+
+            // Tell the room it's unlocked
+            Clients.All.unlockRoom(userViewModel, room.Name);
+
+            // Tell the caller the room was successfully unlocked
+            Clients.Caller.roomUnlocked(room.Name);
+
+            // Notify people of the change
+            OnRoomChanged(room);
+        }
+
         void INotificationService.CloseRoom(IEnumerable<ChatUser> users, ChatRoom room)
         {
             // notify all members of room that it is now closed
